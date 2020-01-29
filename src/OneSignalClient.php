@@ -26,15 +26,16 @@ class OneSignalClient
 
     const MAX_RETRIES = 3;
     const RETRY_DELAY = 700;
-    
-    const LIMIT_VIEW_DEVICES = 300;
 
+    const LIMIT_VIEW_DEVICES = 300;
+    
     private $appId;
     private $restApiKey;
     private $sslVerify;
-
+    
     private $client;
     private $notification;
+    private $async = false;
 
     public function __construct($config)
     {
@@ -51,7 +52,7 @@ class OneSignalClient
         ];
         $this->client = new Client([
             'handler' => $this->createGuzzleHandler(self::API_URL, $headers, $params),
-            'verify'=> $this->sslVerify
+            'verify' => $this->sslVerify
         ]);
     }
 
@@ -65,7 +66,7 @@ class OneSignalClient
             $headers = array_merge($request->getHeaders(), $headers);
 
             $bodyContents = json_decode($request->getBody()->getContents(), true);
-            
+
             $requestMethod = $request->getMethod();
             if ($requestMethod === 'GET') {
                 $uri .= '?app_id=' . $params['app_id'];
@@ -117,7 +118,7 @@ class OneSignalClient
 
     private function getDevices($limit = 300, $offset = 0)
     {
-        if($limit > self::LIMIT_VIEW_DEVICES){
+        if ($limit > self::LIMIT_VIEW_DEVICES) {
             throw new \Exception('You have exceeded the maximum limit of devices (300).');
         }
 
@@ -134,12 +135,14 @@ class OneSignalClient
         return $devices;
     }
 
-    public function getUsers($limit = 300, $offset = 0){
+    public function getUsers($limit = 300, $offset = 0)
+    {
         return $this->getDevices($limit, $offset)['players'];
     }
 
-    public function getUser($playerId){
-        $response = $this->client->get(self::ENDPOINT_PLAYERS.'/'.$playerId);
+    public function getUser($playerId)
+    {
+        $response = $this->client->get(self::ENDPOINT_PLAYERS . '/' . $playerId);
         $user = json_decode($response->getBody()->getContents(), true);
 
         return $user;
@@ -162,7 +165,7 @@ class OneSignalClient
     public function send(array $to = [])
     {
         $notification = [];
-        
+
         if (count($to) > 0) {
             extract($to);
             if (isset($segments)) {
@@ -180,9 +183,18 @@ class OneSignalClient
             throw new \Exception('No notification to send. You might create one with OneSignal::createNotification([$params]).');
         }
 
-        $req = $this->client->post(self::ENDPOINT_NOTIFICATIONS, [
+        $clientMode = !$this->async ? 'post' : 'postAsync';
+        $response = $this->client->{$clientMode}(self::ENDPOINT_NOTIFICATIONS, [
             RequestOptions::JSON => $notification,
         ]);
+
+        return $response;
+    }
+
+    public function async(){
+        $this->async = true;
+
+        return $this;
     }
 
     public function test(array $to = [])

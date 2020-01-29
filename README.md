@@ -56,6 +56,12 @@ $notification->send(['segments'=>['SEGMENT-NAME']]);
 $notification->send(['ids'=>['PLAYER-ID-1','PLAYER-ID-2','PLAYER-ID-3']]);
 ```
 
+* Asynchronously
+```php
+$promise = $notification->async()->send([$params]);
+```
+This will return a `GuzzleHttp\Promise\Promise` (http://docs.guzzlephp.org/en/stable/quickstart.html#async-requests)
+
 ### Send a default template test notification
 * To an existing segment named "Admin"  
 ```php
@@ -74,7 +80,6 @@ The first argument is the **maximum limit**, and the second is the **offset**. B
 ```php
 OneSignal::getUser('PLAYER-ID');
 ```
-
 
 # Exception(s)
 
