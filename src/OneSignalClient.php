@@ -118,7 +118,7 @@ class OneSignalClient
     private function getDevices($limit = 300, $offset = 0)
     {
         if($limit > self::LIMIT_VIEW_DEVICES){
-            throw new \Exception("You have exceeded the maximum limit of devices (300).");
+            throw new \Exception('You have exceeded the maximum limit of devices (300).');
         }
 
         $params = [
@@ -176,6 +176,8 @@ class OneSignalClient
         }
         if (isset($this->notification)) {
             $notification = array_merge($notification, $this->notification);
+        } else {
+            throw new \Exception('No notification to send. You might create one with OneSignal::createNotification([$params]).');
         }
 
         $req = $this->client->post(self::ENDPOINT_NOTIFICATIONS, [
