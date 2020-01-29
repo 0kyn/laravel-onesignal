@@ -1,0 +1,41 @@
+{
+    "name": "okn/laravel-onesignal",
+    "description": "OneSignal wrapper for Laravel",
+    "keywords": [
+        "onesignal",
+        "laravel",
+        "laravel 5",
+        "webpush",
+        "wrapper"
+    ],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "okyn",
+            "email": "0kyn.dev@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=5.5.0",
+        "guzzlehttp/guzzle": "^6.2",
+        "illuminate/support": "4.*|5.*|6.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Okn\\OneSignal\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Okn\\OneSignal\\OneSignalServiceProvider"
+            ],
+            "aliases": {
+                "OneSignal": "Okn\\OneSignal\\Facades\\OneSignal"
+            }
+        }
+    }
+}
