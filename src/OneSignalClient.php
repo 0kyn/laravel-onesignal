@@ -28,11 +28,11 @@ class OneSignalClient
     const RETRY_DELAY = 700;
 
     const LIMIT_VIEW_DEVICES = 300;
-    
+
     private $appId;
     private $restApiKey;
     private $sslVerify;
-    
+
     private $client;
     private $notification;
     private $async = false;
@@ -191,8 +191,24 @@ class OneSignalClient
         return $response;
     }
 
-    public function async(){
+    public function async()
+    {
         $this->async = true;
+
+        return $this;
+    }
+
+    public function withButtons(array $params)
+    {
+        $buttons = [
+            'web_buttons' => $params
+        ];
+
+        if (is_array($this->notification)) {
+            $this->notification = array_merge($this->notification, $buttons);
+        } else {
+            throw new \Exception('No notification to attach button(s) to. You need to create one before adding buttons.');
+        }
 
         return $this;
     }

@@ -41,7 +41,7 @@ App ID et API keys must be defined in the `config/onesignal.php` file.
 $notification = OneSignal::createNotification([
     'headings'=>'Title',
     'contents'=>'Notification message...',
-    'url'=>'https://github.com/0kyn/laravel-onesignal'
+    'url'=>'https://yourwebsite.com'
 ]);
 ```
 
@@ -61,6 +61,24 @@ $notification->send(['ids'=>['PLAYER-ID-1','PLAYER-ID-2','PLAYER-ID-3']]);
 $promise = $notification->async()->send([$params]);
 ```
 This will return a `GuzzleHttp\Promise\Promise` (http://docs.guzzlephp.org/en/stable/quickstart.html#async-requests)
+
+### Add buttons to notification
+```php
+$notification->withButons([
+	[
+		'id' => 'btnId1',
+		'text' => 'Webpush button test',
+		'icon' => 'https://yourwebsite.com/images/icon1.png',
+		'url' => 'https://yourwebsite.com/action1'
+	],
+	[
+		'id' => 'btnId2',
+		'text' => 'Webpush button test #2',
+		'icon' => 'https://yourwebsite.com/images/icon2.png',
+		'url' => 'https://yourwebsite.com/action2'
+	]
+])->send([$params);
+```
 
 ### Send a default template test notification
 * To an existing segment named "Admin"  
