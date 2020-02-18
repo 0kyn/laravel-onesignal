@@ -31,7 +31,12 @@ php artisan onesignal:install
 This command will create a default config file `config/onesignal.php`.
 
 ## Configuration
-App ID et API keys must be defined in the `config/onesignal.php` file.
+App ID et API keys must be defined in the `.env` file as follow:
+```env
+ONESIGNAL_APP_ID=
+ONESIGNAL_REST_API_KEY=
+ONESIGNAL_USER_AUTH_KEY=
+```
 
 ## Usage
 
@@ -123,10 +128,7 @@ Now it should works, if it doesn't you might try the next solution.
 ## Solution 2
 
 ### Disable SSL validation (not recommended)
-In `config/onesignal.php` you can add the following line in the array:
-```php
-return [
-	// ...
-	'ssl_verify'=>false
-];
+In `.env` file you can add the following line:
+```env
+ONESIGNAL_SSL_VERIFY=false
 ```
