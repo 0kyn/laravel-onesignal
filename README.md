@@ -69,7 +69,7 @@ This will return a `GuzzleHttp\Promise\Promise` (http://docs.guzzlephp.org/en/st
 
 ### Add buttons to notification
 ```php
-$notification->withButons([
+$notification->withButtons([
 	[
 		'id' => 'btnId1',
 		'text' => 'Webpush button test',
@@ -82,7 +82,7 @@ $notification->withButons([
 		'icon' => 'https://yourwebsite.com/images/icon2.png',
 		'url' => 'https://yourwebsite.com/action2'
 	]
-])->send([$params);
+])->send([$params]);
 ```
 
 ### Send a default template test notification
